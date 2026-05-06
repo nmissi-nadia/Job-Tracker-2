@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
+
 
 function App() {
+  const [token, setToken] = useState(null);
+
   return (
-    <div>
-      <h1>Job Tracker</h1>
-      <p>Bienvenue dans ton tableau de suivi des candidatures 🚀</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login setToken={setToken} />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
