@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleRegister = async () => {
+    if (!email || !password) {
+      alert('Veuillez remplir tous les champs');
+      return;
+    }
     try {
       const res = await api.post('/auth/register', { email, password });
-      alert('Utilisateur créé avec succès ');
-      console.log(res.data);
+      alert('Utilisateur créé avec succès ✅');
+      navigate('/login');
     } catch (err) {
-      alert('Erreur lors de l’inscription ');
+      alert('Erreur lors de l\'inscription: ' + (err.response?.data?.error || err.message));
       console.error(err);
     }
   };
@@ -46,7 +51,8 @@ function Register() {
             margin: '10px 0',
             border: '1px solid #ddd',
             borderRadius: '4px',
-            fontSize: '16px'
+            fontSize: '16px',
+            boxSizing: 'border-box'
           }}
         />
         <input
@@ -60,7 +66,8 @@ function Register() {
             margin: '10px 0',
             border: '1px solid #ddd',
             borderRadius: '4px',
-            fontSize: '16px'
+            fontSize: '16px',
+            boxSizing: 'border-box'
           }}
         />
         <button
@@ -74,8 +81,12 @@ function Register() {
             borderRadius: '4px',
             fontSize: '16px',
             cursor: 'pointer',
-            marginTop: '10px'
+            marginTop: '10px',
+            boxSizing: 'border-box',
+            transition: 'background-color 0.3s'
           }}
+          onMouseEnter={(e) => e.target.style.backgroundColor = '#0b7dda'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = '#2196F3'}
         >
           S’inscrire
         </button>

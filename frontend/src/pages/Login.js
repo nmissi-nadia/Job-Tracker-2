@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 function Login({ setToken }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      alert('Veuillez remplir tous les champs');
+      return;
+    }
     try {
       const res = await api.post('/auth/login', { email, password });
+      localStorage.setItem('token', res.data.token);
       setToken(res.data.token);
+      navigate('/home');
     } catch (err) {
-      alert('Erreur de connexion');
+      alert('Erreur de connexion: ' + (err.response?.data?.error || err.message));
       console.error(err);
     }
   };
@@ -45,7 +52,8 @@ function Login({ setToken }) {
             margin: '10px 0',
             border: '1px solid #ddd',
             borderRadius: '4px',
-            fontSize: '16px'
+            fontSize: '16px',
+            boxSizing: 'border-box'
           }}
         />
         <input
@@ -59,7 +67,8 @@ function Login({ setToken }) {
             margin: '10px 0',
             border: '1px solid #ddd',
             borderRadius: '4px',
-            fontSize: '16px'
+            fontSize: '16px',
+            boxSizing: 'border-box'
           }}
         />
         <button
@@ -73,8 +82,12 @@ function Login({ setToken }) {
             borderRadius: '4px',
             fontSize: '16px',
             cursor: 'pointer',
-            marginTop: '10px'
+            marginTop: '10px',
+            boxSizing: 'border-box',
+            transition: 'background-color 0.3s'
           }}
+          onMouseEnter={(e) => e.target.style.backgroundColor = '#45a049'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = '#4CAF50'}
         >
           Se connecter
         </button>
