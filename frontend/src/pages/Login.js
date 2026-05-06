@@ -7,7 +7,7 @@ function Login({ setToken }) {
 
   const handleLogin = async () => {
     try {
-      const res = await api.post('/api/auth/login', { email, password });
+      const res = await api.post('/auth/login', { email, password });
       setToken(res.data.token);
     } catch (err) {
       alert('Erreur de connexion ❌');

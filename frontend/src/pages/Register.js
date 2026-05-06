@@ -7,7 +7,7 @@ function Register() {
 
   const handleRegister = async () => {
     try {
-      const res = await api.post('/api/auth/register', { email, password });
+      const res = await api.post('/auth/register', { email, password });
       alert('Utilisateur créé avec succès ✅');
       console.log(res.data);
     } catch (err) {
