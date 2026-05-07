@@ -51,12 +51,12 @@ const Dashboard = () => {
         label: 'Statistiques par étape',
         data: Object.values(stats?.byStatus || {}),
         backgroundColor: [
-          'rgba(99, 102, 241, 0.8)',
-          'rgba(16, 185, 129, 0.8)',
-          'rgba(59, 130, 246, 0.8)',
-          'rgba(239, 68, 68, 0.8)',
+          '#10b981',
+          '#059669',
+          '#34d399',
+          '#065f46',
         ],
-        borderRadius: 8,
+        borderRadius: 4,
       },
     ],
   };
@@ -65,11 +65,12 @@ const Dashboard = () => {
     labels: Object.keys(stats?.byStatus || {}),
     datasets: [{
       data: Object.values(stats?.byStatus || {}),
-      backgroundColor: ['#6366f1', '#10b981', '#3b82f6', '#ef4444'],
+      backgroundColor: ['#10b981', '#059669', '#34d399', '#065f46'],
       borderWidth: 0,
       hoverOffset: 15
     }]
   };
+
 
   return (
     <Box>
@@ -84,7 +85,7 @@ const Dashboard = () => {
         {kpis.map((kpi, idx) => (
           <Grid item xs={12} sm={6} md={3} key={idx}>
             <Card sx={{ 
-              borderRadius: 4, 
+              borderRadius: 2, 
               position: 'relative', 
               overflow: 'hidden',
               boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
@@ -96,7 +97,7 @@ const Dashboard = () => {
                   color: kpi.color, 
                   width: 56, 
                   height: 56,
-                  borderRadius: '16px'
+                  borderRadius: '8px'
                 }}>
                   {kpi.icon}
                 </Avatar>
@@ -116,7 +117,7 @@ const Dashboard = () => {
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 4, borderRadius: 5, boxShadow: 3 }}>
+          <Paper sx={{ p: 4, borderRadius: 2, boxShadow: 3 }}>
             <Typography variant="h6" sx={{ mb: 3, fontWeight: 700 }}>Activité Récente</Typography>
             <Box sx={{ height: 300 }}>
               <Bar data={chartData} options={{ 
@@ -132,7 +133,7 @@ const Dashboard = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 4, borderRadius: 5, boxShadow: 3, height: '100%' }}>
+          <Paper sx={{ p: 4, borderRadius: 2, boxShadow: 3, height: '100%' }}>
             <Typography variant="h6" sx={{ mb: 3, fontWeight: 700 }}>Répartition</Typography>
             <Box sx={{ height: 250, display: 'flex', justifyContent: 'center' }}>
               <Doughnut data={doughnutData} options={{ 

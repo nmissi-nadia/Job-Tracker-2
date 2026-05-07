@@ -93,7 +93,7 @@ const ApplicationList = () => {
               flexDirection: 'column', 
               height: '100%',
               bgcolor: 'rgba(226, 232, 240, 0.4)',
-              borderRadius: 4,
+              borderRadius: 2,
               p: 2
             }}>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, px: 1 }}>
@@ -122,7 +122,7 @@ const ApplicationList = () => {
                       animate={{ opacity: 1, scale: 1 }}
                     >
                       <Card sx={{ 
-                        borderRadius: 3, 
+                        borderRadius: 1.5, 
                         boxShadow: 2,
                         '&:hover': { boxShadow: 5, transform: 'translateY(-2px)' },
                         transition: 'all 0.2s'
@@ -181,7 +181,7 @@ const ApplicationList = () => {
       </Grid>
 
       {/* Edit Dialog */}
-      <Dialog open={editOpen} onClose={() => setEditOpen(false)} fullWidth maxWidth="xs" PaperProps={{ sx: { borderRadius: 4 } }}>
+      <Dialog open={editOpen} onClose={() => setEditOpen(false)} fullWidth maxWidth="xs" PaperProps={{ sx: { borderRadius: 2 } }}>
         <DialogTitle sx={{ fontWeight: 800 }}>Mettre à jour le statut</DialogTitle>
         <DialogContent>
           <TextField

@@ -48,7 +48,7 @@ const Layout = ({ children }) => {
       <Toolbar sx={{ my: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <Box sx={{ 
-            width: 40, height: 40, borderRadius: '12px', 
+            width: 40, height: 40, borderRadius: '8px', 
             bgcolor: 'secondary.main', display: 'flex', 
             alignItems: 'center', justifyContent: 'center',
             boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
@@ -71,7 +71,7 @@ const Layout = ({ children }) => {
               }}
               selected={location.pathname === item.path}
               sx={{
-                borderRadius: '12px',
+                borderRadius: '8px',
                 py: 1.5,
                 transition: 'all 0.2s',
                 '&.Mui-selected': {
@@ -102,7 +102,7 @@ const Layout = ({ children }) => {
       <Box sx={{ p: 2, mt: 'auto' }}>
         <Paper sx={{ 
           p: 2, bgcolor: 'rgba(255, 255, 255, 0.05)', 
-          borderRadius: 4, display: 'flex', 
+          borderRadius: 2, display: 'flex', 
           alignItems: 'center', gap: 2, color: 'white',
           border: '1px solid rgba(255, 255, 255, 0.1)'
         }}>
@@ -155,7 +155,7 @@ const Layout = ({ children }) => {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             PaperProps={{
               sx: { 
-                mt: 1.5, minWidth: 180, borderRadius: 3, 
+                mt: 1.5, minWidth: 180, borderRadius: 2, 
                 boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' 
               }
             }}

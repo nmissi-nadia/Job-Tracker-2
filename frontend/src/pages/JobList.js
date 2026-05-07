@@ -122,13 +122,13 @@ const JobList = () => {
           color="secondary"
           startIcon={<AddIcon />} 
           onClick={() => handleOpen()}
-          sx={{ borderRadius: 3, px: 3 }}
+          sx={{ borderRadius: 1.5, px: 3 }}
         >
           Nouvelle offre
         </Button>
       </Box>
 
-      <Card sx={{ p: 1, mb: 3, borderRadius: 4 }}>
+      <Card sx={{ p: 1, mb: 3, borderRadius: 2 }}>
         <TextField 
           fullWidth 
           variant="outlined" 
@@ -146,7 +146,7 @@ const JobList = () => {
         />
       </Card>
 
-      <TableContainer component={Paper} sx={{ borderRadius: 5, overflow: 'hidden', boxShadow: 4 }}>
+      <TableContainer component={Paper} sx={{ borderRadius: 2, overflow: 'hidden', boxShadow: 4 }}>
         <Table>
           <TableHead sx={{ bgcolor: 'primary.main' }}>
             <TableRow>
@@ -226,7 +226,7 @@ const JobList = () => {
       </TableContainer>
 
       {/* Job Edit Dialog */}
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm" PaperProps={{ sx: { borderRadius: 4 } }}>
+      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm" PaperProps={{ sx: { borderRadius: 2 } }}>
         <DialogTitle sx={{ fontWeight: 800, pt: 3 }}>
           {editingJob ? 'Modifier l\'offre' : 'Ajouter une opportunité'}
         </DialogTitle>
@@ -262,7 +262,7 @@ const JobList = () => {
       </Dialog>
 
       {/* Application Dialog */}
-      <Dialog open={applyOpen} onClose={() => setApplyOpen(false)} fullWidth maxWidth="xs" PaperProps={{ sx: { borderRadius: 4 } }}>
+      <Dialog open={applyOpen} onClose={() => setApplyOpen(false)} fullWidth maxWidth="xs" PaperProps={{ sx: { borderRadius: 2 } }}>
         <DialogTitle sx={{ fontWeight: 800, pt: 3 }}>
           Lancer une candidature
         </DialogTitle>

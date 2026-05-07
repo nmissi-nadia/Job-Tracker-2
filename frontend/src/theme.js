@@ -3,41 +3,30 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#0f172a', // Slate 900
-      light: '#334155', // Slate 700
-      dark: '#020617', // Slate 950
+      main: '#0f172a', // Slate 900 (Color 1)
     },
     secondary: {
-      main: '#10b981', // Emerald 500
-      light: '#34d399', // Emerald 400
-      dark: '#059669', // Emerald 600
+      main: '#059669', // Emerald 600 (Color 2)
     },
     background: {
-      default: '#f8fafc', // Slate 50
+      default: '#f8fafc', // Light Gray (Color 3)
       paper: '#ffffff',
     },
     text: {
       primary: '#0f172a',
-      secondary: '#64748b', // Slate 500
+      secondary: '#64748b',
     },
-    success: { main: '#10b981' },
-    warning: { main: '#f59e0b' },
-    error: { main: '#ef4444' },
-    info: { main: '#3b82f6' },
   },
   typography: {
-    fontFamily: '"Outfit", "Inter", "system-ui", sans-serif',
-    h1: { fontWeight: 800, letterSpacing: '-0.025em' },
-    h2: { fontWeight: 800, letterSpacing: '-0.025em' },
-    h3: { fontWeight: 700, letterSpacing: '-0.025em' },
-    h4: { fontWeight: 700, letterSpacing: '-0.025em' },
-    h5: { fontWeight: 600 },
-    h6: { fontWeight: 600 },
-    button: { textTransform: 'none', fontWeight: 600, letterSpacing: '0.025em' },
-    subtitle1: { color: '#64748b' },
+    fontFamily: '"Outfit", "Inter", sans-serif',
+    h1: { fontWeight: 800 },
+    h2: { fontWeight: 800 },
+    h3: { fontWeight: 700 },
+    h4: { fontWeight: 700 },
+    button: { textTransform: 'none', fontWeight: 600 },
   },
   shape: {
-    borderRadius: 16,
+    borderRadius: 10, // Reduced from 16
   },
   shadows: [
     'none',
