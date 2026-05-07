@@ -4,6 +4,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
+import AppForm from './pages/ApplicationForm';
+import JobForm from "./pages/JobForm";
 
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/job-form" element={<JobForm />} />
+        <Route path="/application-form" element={<AppForm />} />
       </Routes>
     </BrowserRouter>
   );
