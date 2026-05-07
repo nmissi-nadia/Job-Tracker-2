@@ -4,15 +4,19 @@ const sequelize = require('./db');
 const authRoutes = require('./routes/auth');
 const jobsRoutes = require('./routes/jobs');
 const appRoutes = require('./routes/applications');
-const Job = require('./models/Job');
-const User = require('./models/User');
+const statsRoutes = require('./routes/stats');
+
+const { User, Job, Application } = require('./models');
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobsRoutes);
-app.use('/applications', appRoutes);
+app.use('/api/applications', appRoutes);
+app.use('/api/stats', statsRoutes);
+
 
 sequelize.authenticate()
   .then(() => console.log('Database connected'))

@@ -5,7 +5,9 @@ const Job = sequelize.define('Job', {
   title: DataTypes.STRING,
   company: DataTypes.STRING,
   link: DataTypes.STRING,
-  skills: DataTypes.STRING
+  skills: DataTypes.STRING,
+  userId: DataTypes.INTEGER
+
 });
 
 module.exports = Job;
