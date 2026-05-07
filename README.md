@@ -1,4 +1,4 @@
-# 🚀 Job Tracker Premium - SaaS Edition
+# Job Tracker Premium - SaaS Edition
 
 Une plateforme moderne et élégante pour centraliser et suivre vos candidatures professionnelles avec style et efficacité.
 
@@ -6,7 +6,7 @@ Une plateforme moderne et élégante pour centraliser et suivre vos candidatures
 ![Tech Stack](https://img.shields.io/badge/Stack-Fullstack-slate)
 ![Docker](https://img.shields.io/badge/Deployment-Docker-blue)
 
-## ✨ Fonctionnalités Clés
+##  Fonctionnalités Clés
 
 - **Tableau de Bord Analytics** : Visualisez votre progression avec des graphiques interactifs et des indicateurs de performance clés (KPI).
 - **Gestion des Offres** : Enregistrez toutes les opportunités qui vous intéressent avec gestion des compétences requises.
@@ -15,14 +15,14 @@ Une plateforme moderne et élégante pour centraliser et suivre vos candidatures
 - **Design de Haute Précision** : Interface inspirée des meilleurs SaaS (Glassmorphism, animations fluides, palette Slate & Emerald).
 - **Authentification Sécurisée** : Espace personnel protégé par JWT.
 
-## 🛠️ Stack Technique
+##   Stack Technique
 
 - **Frontend** : React.js, Material UI (MUI), Framer Motion, Chart.js.
 - **Backend** : Node.js, Express.
 - **Base de Données** : PostgreSQL avec Sequelize (ORM).
 - **Infrastructure** : Docker & Docker Compose.
 
-## 🚀 Installation Rapide
+##  Installation Rapide
 
 Assurez-vous d'avoir **Docker** et **Docker Compose** installés sur votre machine.
 
@@ -41,7 +41,7 @@ Assurez-vous d'avoir **Docker** et **Docker Compose** installés sur votre machi
    - Frontend : `http://localhost:3000`
    - Backend API : `http://localhost:5000`
 
-## 📦 Structure du Projet
+##  Structure du Projet
 
 ```text
 ├── backend/            # API Node.js/Express
@@ -57,4 +57,4 @@ Assurez-vous d'avoir **Docker** et **Docker Compose** installés sur votre machi
 ```
 
 ---
-*Développé avec ❤️ pour simplifier votre recherche d'emploi.*
+*Développé par NMISSI Nadia pour simplifier votre recherche d'emploi.*
