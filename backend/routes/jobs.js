@@ -13,6 +13,7 @@ router.get('/', auth, async (req, res) => {
     });
     res.json(jobs);
   } catch (err) {
+    console.error('GET Jobs Error:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -30,6 +31,7 @@ router.post('/', auth, async (req, res) => {
     });
     res.status(201).json(job);
   } catch (err) {
+    console.error('POST Job Error:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -43,6 +45,7 @@ router.put('/:id', auth, async (req, res) => {
     await job.update(req.body);
     res.json(job);
   } catch (err) {
+    console.error('POST Job Error:', err);
     res.status(400).json({ error: err.message });
   }
 });
@@ -56,6 +59,7 @@ router.delete('/:id', auth, async (req, res) => {
     await job.destroy();
     res.json({ message: 'Job deleted successfully' });
   } catch (err) {
+    console.error('GET Jobs Error:', err);
     res.status(500).json({ error: err.message });
   }
 });

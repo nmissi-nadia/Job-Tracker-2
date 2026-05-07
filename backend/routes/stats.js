@@ -1,5 +1,6 @@
 const express = require('express');
 const { Job, Application, sequelize } = require('../models');
+const { Sequelize } = require('sequelize');
 const auth = require('../middleware/auth');
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.get('/', auth, async (req, res) => {
       where: { userId },
       attributes: [
         'status',
-        [sequelize.fn('COUNT', sequelize.col('status')), 'count']
+        [Sequelize.fn('COUNT', Sequelize.col('status')), 'count']
       ],
       group: ['status']
     });
@@ -33,8 +34,10 @@ router.get('/', auth, async (req, res) => {
 
     res.json(stats);
   } catch (err) {
+    console.error('Stats API Error:', err);
     res.status(500).json({ error: err.message });
   }
+
 });
 
 module.exports = router;
