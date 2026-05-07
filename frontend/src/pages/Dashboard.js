@@ -1,164 +1,145 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Grid, Paper, Card, CardContent, useTheme, Avatar } from '@mui/material';
 import { 
-  Grid, Paper, Typography, Box, Card, CardContent, 
-  Divider, List, ListItem, ListItemText, ListItemIcon, 
-  CircularProgress, Button
-} from '@mui/material';
-import { 
-  Work as WorkIcon, 
-  CheckCircle as SuccessIcon, 
-  Pending as PendingIcon, 
-  Cancel as CancelIcon,
-  ArrowForward as ArrowForwardIcon
+  WorkRounded as JobIcon, 
+  AssignmentRounded as AppIcon, 
+  TrendingUpRounded as StatsIcon,
+  CheckCircleRounded as SuccessIcon
 } from '@mui/icons-material';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
-import { useNavigate } from 'react-router-dom';
+import { 
+  Chart as ChartJS, 
+  CategoryScale, 
+  LinearScale, 
+  BarElement, 
+  Title, 
+  Tooltip, 
+  Legend, 
+  ArcElement 
+} from 'chart.js';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import api from '../services/api';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
-  const [recentJobs, setRecentJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  const theme = useTheme();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchStats = async () => {
       try {
-        const [statsRes, jobsRes] = await Promise.all([
-          api.get('/stats'),
-          api.get('/jobs')
-        ]);
-        setStats(statsRes.data);
-        setRecentJobs(jobsRes.data.slice(0, 5));
+        const res = await api.get('/stats');
+        setStats(res.data);
       } catch (err) {
-        console.error('Failed to fetch dashboard data', err);
-      } finally {
-        setLoading(false);
+        console.error('Erreur stats:', err);
       }
     };
-    fetchData();
+    fetchStats();
   }, []);
 
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+  const kpis = [
+    { label: 'Offres Suivies', value: stats?.totalJobs || 0, icon: <JobIcon />, color: '#6366f1' },
+    { label: 'Candidatures', value: stats?.totalApplications || 0, icon: <AppIcon />, color: '#10b981' },
+    { label: 'Entretiens', value: stats?.byStatus?.['Entretien'] || 0, icon: <StatsIcon />, color: '#3b82f6' },
+    { label: 'Offres Reçues', value: stats?.byStatus?.['Offre'] || 0, icon: <SuccessIcon />, color: '#f59e0b' },
+  ];
 
   const chartData = {
     labels: Object.keys(stats?.byStatus || {}),
     datasets: [
       {
+        label: 'Statistiques par étape',
         data: Object.values(stats?.byStatus || {}),
         backgroundColor: [
-          '#2196f3', // Pending
-          '#4caf50', // Offered
-          '#ff9800', // Interviewing
-          '#f44336', // Rejected
+          'rgba(99, 102, 241, 0.8)',
+          'rgba(16, 185, 129, 0.8)',
+          'rgba(59, 130, 246, 0.8)',
+          'rgba(239, 68, 68, 0.8)',
         ],
-        borderWidth: 0,
+        borderRadius: 8,
       },
     ],
   };
 
-  const kpis = [
-    { title: 'Total Offres', value: stats?.totalJobs || 0, icon: <WorkIcon color="primary" />, color: '#e3f2fd' },
-    { title: 'Candidatures', value: stats?.totalApplications || 0, icon: <PendingIcon color="warning" />, color: '#fff3e0' },
-    { title: 'Entretiens', value: stats?.byStatus?.['Interview'] || 0, icon: <SuccessIcon color="secondary" />, color: '#e8f5e9' },
-    { title: 'Refus', value: stats?.byStatus?.['Rejected'] || 0, icon: <CancelIcon color="error" />, color: '#ffebee' },
-  ];
+  const doughnutData = {
+    labels: Object.keys(stats?.byStatus || {}),
+    datasets: [{
+      data: Object.values(stats?.byStatus || {}),
+      backgroundColor: ['#6366f1', '#10b981', '#3b82f6', '#ef4444'],
+      borderWidth: 0,
+      hoverOffset: 15
+    }]
+  };
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ mb: 4, fontWeight: 'bold' }}>
-        Tableau de bord
-      </Typography>
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h4" sx={{ mb: 1 }}>Bonjour ! 👋</Typography>
+        <Typography variant="body1" color="text.secondary">
+          Voici un aperçu de votre progression aujourd'hui.
+        </Typography>
+      </Box>
 
-      <Grid container spacing={3}>
-        {/* KPI Cards */}
-        {kpis.map((kpi, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Card sx={{ borderRadius: 4 }}>
-              <CardContent sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ 
-                  p: 2, 
-                  borderRadius: 3, 
-                  bgcolor: kpi.color, 
-                  display: 'flex', 
-                  mr: 2 
+      <Grid container spacing={3} sx={{ mb: 4 }}>
+        {kpis.map((kpi, idx) => (
+          <Grid item xs={12} sm={6} md={3} key={idx}>
+            <Card sx={{ 
+              borderRadius: 4, 
+              position: 'relative', 
+              overflow: 'hidden',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+              '&:hover': { transform: 'scale(1.02)', transition: '0.3s' }
+            }}>
+              <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 3 }}>
+                <Avatar sx={{ 
+                  bgcolor: `${kpi.color}15`, 
+                  color: kpi.color, 
+                  width: 56, 
+                  height: 56,
+                  borderRadius: '16px'
                 }}>
                   {kpi.icon}
-                </Box>
+                </Avatar>
                 <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    {kpi.title}
-                  </Typography>
-                  <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                    {kpi.value}
-                  </Typography>
+                  <Typography variant="h4" sx={{ fontWeight: 800 }}>{kpi.value}</Typography>
+                  <Typography variant="body2" color="text.secondary">{kpi.label}</Typography>
                 </Box>
               </CardContent>
+              <Box sx={{ 
+                position: 'absolute', bottom: 0, left: 0, width: '100%', 
+                height: 4, bgcolor: kpi.color, opacity: 0.3 
+              }} />
             </Card>
           </Grid>
         ))}
+      </Grid>
 
-        {/* Chart Section */}
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 3, borderRadius: 4, height: '100%' }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
-              Statut des candidatures
-            </Typography>
-            <Box sx={{ height: 300, display: 'flex', justifyContent: 'center' }}>
-              {stats?.totalApplications > 0 ? (
-                <Doughnut data={chartData} options={{ maintainAspectRatio: false }} />
-              ) : (
-                <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
-                  Aucune donnée disponible
-                </Box>
-              )}
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={8}>
+          <Paper sx={{ p: 4, borderRadius: 5, boxShadow: 3 }}>
+            <Typography variant="h6" sx={{ mb: 3, fontWeight: 700 }}>Activité Récente</Typography>
+            <Box sx={{ height: 300 }}>
+              <Bar data={chartData} options={{ 
+                responsive: true, 
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { 
+                  y: { beginAtZero: true, grid: { display: false } },
+                  x: { grid: { display: false } }
+                }
+              }} />
             </Box>
           </Paper>
         </Grid>
-
-        {/* Recent Jobs Section */}
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 3, borderRadius: 4, height: '100%' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                Offres récentes
-              </Typography>
-              <Button 
-                endIcon={<ArrowForwardIcon />} 
-                onClick={() => navigate('/jobs')}
-              >
-                Tout voir
-              </Button>
+        <Grid item xs={12} md={4}>
+          <Paper sx={{ p: 4, borderRadius: 5, boxShadow: 3, height: '100%' }}>
+            <Typography variant="h6" sx={{ mb: 3, fontWeight: 700 }}>Répartition</Typography>
+            <Box sx={{ height: 250, display: 'flex', justifyContent: 'center' }}>
+              <Doughnut data={doughnutData} options={{ 
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } } 
+              }} />
             </Box>
-            <Divider />
-            <List>
-              {recentJobs.length > 0 ? (
-                recentJobs.map((job) => (
-                  <ListItem key={job.id} divider>
-                    <ListItemIcon>
-                      <WorkIcon color="primary" />
-                    </ListItemIcon>
-                    <ListItemText 
-                      primary={job.title} 
-                      secondary={job.company} 
-                    />
-                  </ListItem>
-                ))
-              ) : (
-                <ListItem>
-                  <ListItemText primary="Aucune offre ajoutée" />
-                </ListItem>
-              )}
-            </List>
           </Paper>
         </Grid>
       </Grid>
