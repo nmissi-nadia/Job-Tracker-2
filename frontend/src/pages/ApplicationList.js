@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Box, Typography, Grid, Paper, Card, CardContent, 
   IconButton, Chip, Avatar, Tooltip, Button,
-  Dialog, DialogTitle, DialogContent, DialogActions, TextField
+  Dialog, DialogTitle, DialogContent, DialogActions, TextField, Divider
 } from '@mui/material';
 import { 
   MoreVert as MoreIcon,
