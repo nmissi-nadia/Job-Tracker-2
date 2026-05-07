@@ -1,101 +1,121 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { 
+  Box, Container, Paper, TextField, Button, Typography, 
+  Link, InputAdornment, IconButton
+} from '@mui/material';
+import { Visibility, VisibilityOff, Email, Lock, Person } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import api from '../services/api';
 
-function Register() {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleRegister = async () => {
-    if (!email || !password) {
-      alert('Veuillez remplir tous les champs');
-      return;
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     try {
-      const res = await api.post('/auth/register', { email, password });
-      alert('Utilisateur créé avec succès ✅');
+      await api.post('/auth/register', { email, password });
+      toast.success('Compte créé avec succès ! Connectez-vous.');
       navigate('/login');
     } catch (err) {
-      alert('Erreur lors de l\'inscription: ' + (err.response?.data?.error || err.message));
-      console.error(err);
+      toast.error(err.response?.data?.error || 'Erreur lors de l\'inscription');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{
-      display: 'flex',
+    <Box sx={{ 
+      minHeight: '100vh', 
+      display: 'flex', 
+      alignItems: 'center', 
       justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      backgroundColor: '#f5f5f5',
-      fontFamily: 'Arial, sans-serif'
+      background: 'linear-gradient(135deg, #00c853 0%, #009624 100%)',
+      p: 2
     }}>
-      <div style={{
-        backgroundColor: 'white',
-        padding: '40px',
-        borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-        width: '300px',
-        textAlign: 'center'
-      }}>
-        <h2 style={{ marginBottom: '20px', color: '#333' }}>Inscription</h2>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '10px',
-            margin: '10px 0',
-            border: '1px solid #ddd',
-            borderRadius: '4px',
-            fontSize: '16px',
-            boxSizing: 'border-box'
-          }}
-        />
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '10px',
-            margin: '10px 0',
-            border: '1px solid #ddd',
-            borderRadius: '4px',
-            fontSize: '16px',
-            boxSizing: 'border-box'
-          }}
-        />
-        <button
-          onClick={handleRegister}
-          style={{
-            width: '100%',
-            padding: '12px',
-            backgroundColor: '#2196F3',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            fontSize: '16px',
-            cursor: 'pointer',
-            marginTop: '10px',
-            boxSizing: 'border-box',
-            transition: 'background-color 0.3s'
-          }}
-          onMouseEnter={(e) => e.target.style.backgroundColor = '#0b7dda'}
-          onMouseLeave={(e) => e.target.style.backgroundColor = '#2196F3'}
-        >
-          S’inscrire
-        </button>
-        <p style={{ marginTop: '20px', color: '#666' }}>
-          Déjà un compte ? <Link to="/" style={{ color: '#4CAF50', textDecoration: 'none' }}>Se connecter</Link>
-        </p>
-      </div>
-    </div>
+      <Container maxWidth="sm">
+        <Paper elevation={10} sx={{ p: { xs: 4, md: 6 }, borderRadius: 4 }}>
+          <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <Typography variant="h4" color="secondary" sx={{ fontWeight: 'bold', mb: 1 }}>
+              Rejoignez-nous
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Commencez à traquer vos succès dès aujourd'hui
+            </Typography>
+          </Box>
+
+          <form onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              label="Email"
+              variant="outlined"
+              margin="normal"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Email color="action" />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              fullWidth
+              label="Mot de passe"
+              type={showPassword ? 'text' : 'password'}
+              variant="outlined"
+              margin="normal"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Lock color="action" />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <Button
+              fullWidth
+              variant="contained"
+              color="secondary"
+              size="large"
+              type="submit"
+              disabled={loading}
+              sx={{ mt: 4, mb: 2, height: 56, borderRadius: 2, color: 'white' }}
+            >
+              {loading ? 'Inscription...' : 'Créer un compte'}
+            </Button>
+
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <Typography variant="body2">
+                Déjà un compte ?{' '}
+                <Link href="/login" underline="hover" sx={{ fontWeight: 'bold', color: 'secondary.main' }}>
+                  Se connecter
+                </Link>
+              </Typography>
+            </Box>
+          </form>
+        </Paper>
+      </Container>
+    </Box>
   );
-}
+};
 
 export default Register;

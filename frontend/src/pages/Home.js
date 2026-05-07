@@ -1,94 +1,93 @@
 import React from 'react';
+import { Box, Button, Container, Typography, Grid, Paper } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { 
+  RocketLaunch as RocketIcon, 
+  QueryStats as StatsIcon, 
+  Security as SecurityIcon 
+} from '@mui/icons-material';
 
-function Home() {
+const Home = () => {
+  const navigate = useNavigate();
+
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <header style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <h1 style={{ color: '#4CAF50' }}>Bienvenue sur Job Tracker</h1>
-        <p style={{ fontSize: '18px', color: '#666' }}>
-          Suivez vos candidatures et gérez vos opportunités professionnelles.
-        </p>
-      </header>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+      {/* Hero Section */}
+      <Box sx={{ 
+        background: 'linear-gradient(135deg, #1a237e 0%, #000051 100%)', 
+        color: 'white', 
+        py: { xs: 10, md: 15 },
+        textAlign: 'center'
+      }}>
+        <Container maxWidth="md">
+          <Typography variant="h2" sx={{ fontWeight: 'bold', mb: 2, fontSize: { xs: '2.5rem', md: '4rem' } }}>
+            Maîtrisez votre recherche d'emploi
+          </Typography>
+          <Typography variant="h5" sx={{ mb: 6, opacity: 0.9 }}>
+            Traquez vos offres, gérez vos candidatures et analysez vos progrès en un seul endroit.
+          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+            <Button 
+              variant="contained" 
+              color="secondary" 
+              size="large"
+              onClick={() => navigate('/register')}
+              sx={{ px: 4, py: 1.5, fontSize: '1.1rem', color: 'white' }}
+            >
+              Démarrer gratuitement
+            </Button>
+            <Button 
+              variant="outlined" 
+              color="inherit" 
+              size="large"
+              onClick={() => navigate('/login')}
+              sx={{ px: 4, py: 1.5, fontSize: '1.1rem' }}
+            >
+              Se connecter
+            </Button>
+          </Box>
+        </Container>
+      </Box>
 
-      <section style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-        <div style={{
-          backgroundColor: '#f9f9f9',
-          border: '1px solid #ddd',
-          borderRadius: '8px',
-          padding: '20px',
-          margin: '10px',
-          width: '300px',
-          textAlign: 'center',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          <h2 style={{ color: '#2196F3' }}>Candidatures</h2>
-          <p>Ajoutez et suivez vos candidatures.</p>
-          <button style={{
-            backgroundColor: '#2196F3',
-            color: 'white',
-            border: 'none',
-            padding: '10px 20px',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}>
-            Voir Candidatures
-          </button>
-        </div>
+      {/* Features Section */}
+      <Container maxWidth="lg" sx={{ py: 10 }}>
+        <Grid container spacing={4}>
+          {[
+            { 
+              title: 'Gestion Simple', 
+              desc: 'Ajoutez des offres en un clic et gardez une trace de tous les liens importants.',
+              icon: <RocketIcon sx={{ fontSize: 40, color: '#1a237e' }} />
+            },
+            { 
+              title: 'Statistiques Avancées', 
+              desc: 'Visualisez vos taux de succès et le statut de vos candidatures en temps réel.',
+              icon: <StatsIcon sx={{ fontSize: 40, color: '#1a237e' }} />
+            },
+            { 
+              title: 'Sécurisé & Privé', 
+              desc: 'Vos données sont protégées et accessibles uniquement par vous.',
+              icon: <SecurityIcon sx={{ fontSize: 40, color: '#1a237e' }} />
+            }
+          ].map((feature, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <Paper sx={{ p: 4, textAlign: 'center', borderRadius: 4, height: '100%' }}>
+                <Box sx={{ mb: 2 }}>{feature.icon}</Box>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>{feature.title}</Typography>
+                <Typography variant="body2" color="text.secondary">{feature.desc}</Typography>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
 
-        <div style={{
-          backgroundColor: '#f9f9f9',
-          border: '1px solid #ddd',
-          borderRadius: '8px',
-          padding: '20px',
-          margin: '10px',
-          width: '300px',
-          textAlign: 'center',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          <h2 style={{ color: '#FF9800' }}>Statistiques</h2>
-          <p>Analysez vos progrès.</p>
-          <button style={{
-            backgroundColor: '#FF9800',
-            color: 'white',
-            border: 'none',
-            padding: '10px 20px',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}>
-            Voir Stats
-          </button>
-        </div>
-
-        <div style={{
-          backgroundColor: '#f9f9f9',
-          border: '1px solid #ddd',
-          borderRadius: '8px',
-          padding: '20px',
-          margin: '10px',
-          width: '300px',
-          textAlign: 'center',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          <h2 style={{ color: '#4CAF50' }}>Paramètres</h2>
-          <p>Configurez votre profil.</p>
-          <button style={{
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            padding: '10px 20px',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}>
-            Aller aux Paramètres
-          </button>
-        </div>
-      </section>
-
-      <footer style={{ textAlign: 'center', marginTop: '40px', color: '#999' }}>
-        <p>&copy; 2026 Job Tracker. Tous droits réservés.</p>
-      </footer>
-    </div>
+      {/* Footer */}
+      <Box sx={{ py: 6, textAlign: 'center', borderTop: '1px solid #e0e0e0' }}>
+        <Typography variant="body2" color="text.secondary">
+          © 2026 Job Tracker. Développé pour votre succès professionnel.
+        </Typography>
+      </Box>
+    </Box>
   );
-}
+};
 
 export default Home;

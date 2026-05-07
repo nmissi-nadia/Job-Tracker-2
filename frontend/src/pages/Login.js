@@ -1,102 +1,123 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { 
+  Box, Container, Paper, TextField, Button, Typography, 
+  Link, InputAdornment, IconButton, Alert 
+} from '@mui/material';
+import { Visibility, VisibilityOff, Email, Lock } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
-function Login({ setToken }) {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      alert('Veuillez remplir tous les champs');
-      return;
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     try {
       const res = await api.post('/auth/login', { email, password });
-      localStorage.setItem('token', res.data.token);
-      setToken(res.data.token);
-      navigate('/home');
+      login(res.data.token);
+      toast.success('Bon retour !');
+      navigate('/dashboard');
     } catch (err) {
-      alert('Erreur de connexion: ' + (err.response?.data?.error || err.message));
-      console.error(err);
+      toast.error(err.response?.data?.error || 'Erreur de connexion');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{
-      display: 'flex',
+    <Box sx={{ 
+      minHeight: '100vh', 
+      display: 'flex', 
+      alignItems: 'center', 
       justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      backgroundColor: '#f5f5f5',
-      fontFamily: 'Arial, sans-serif'
+      background: 'linear-gradient(135deg, #1a237e 0%, #000051 100%)',
+      p: 2
     }}>
-      <div style={{
-        backgroundColor: 'white',
-        padding: '40px',
-        borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-        width: '300px',
-        textAlign: 'center'
-      }}>
-        <h2 style={{ marginBottom: '20px', color: '#333' }}>Connexion</h2>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '10px',
-            margin: '10px 0',
-            border: '1px solid #ddd',
-            borderRadius: '4px',
-            fontSize: '16px',
-            boxSizing: 'border-box'
-          }}
-        />
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '10px',
-            margin: '10px 0',
-            border: '1px solid #ddd',
-            borderRadius: '4px',
-            fontSize: '16px',
-            boxSizing: 'border-box'
-          }}
-        />
-        <button
-          onClick={handleLogin}
-          style={{
-            width: '100%',
-            padding: '12px',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            fontSize: '16px',
-            cursor: 'pointer',
-            marginTop: '10px',
-            boxSizing: 'border-box',
-            transition: 'background-color 0.3s'
-          }}
-          onMouseEnter={(e) => e.target.style.backgroundColor = '#45a049'}
-          onMouseLeave={(e) => e.target.style.backgroundColor = '#4CAF50'}
-        >
-          Se connecter
-        </button>
-        <p style={{ marginTop: '20px', color: '#666' }}>
-          Pas de compte ? <Link to="/register" style={{ color: '#2196F3', textDecoration: 'none' }}>S'inscrire</Link>
-        </p>
-      </div>
-    </div>
+      <Container maxWidth="sm">
+        <Paper elevation={10} sx={{ p: { xs: 4, md: 6 }, borderRadius: 4 }}>
+          <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <Typography variant="h4" color="primary" sx={{ fontWeight: 'bold', mb: 1 }}>
+              Job Tracker
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Connectez-vous pour suivre vos opportunités
+            </Typography>
+          </Box>
+
+          <form onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              label="Email"
+              variant="outlined"
+              margin="normal"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Email color="action" />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              fullWidth
+              label="Mot de passe"
+              type={showPassword ? 'text' : 'password'}
+              variant="outlined"
+              margin="normal"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Lock color="action" />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <Button
+              fullWidth
+              variant="contained"
+              size="large"
+              type="submit"
+              disabled={loading}
+              sx={{ mt: 4, mb: 2, height: 56, borderRadius: 2 }}
+            >
+              {loading ? 'Connexion...' : 'Se connecter'}
+            </Button>
+
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <Typography variant="body2">
+                Pas encore de compte ?{' '}
+                <Link href="/register" underline="hover" sx={{ fontWeight: 'bold' }}>
+                  S'inscrire
+                </Link>
+              </Typography>
+            </Box>
+          </form>
+        </Paper>
+      </Container>
+    </Box>
   );
-}
+};
 
 export default Login;
